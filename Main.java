@@ -1,18 +1,19 @@
 import Controllers.Controlador;
+import Controllers.EncryptAES;
 import DTOs.actualizarNombreCuentaDTO;
 import DTOs.anadirClienteDTO;
 import DTOs.borrarCuentaDTO;
+import Interfaces.Cypher;
 
 public class Main {
 
     public static void main(String[] args) {
         
         Controlador controlador = new Controlador("clientes");
-        controlador.imprimirClientes();
-        controlador.anadirCliente(new anadirClienteDTO("004", "Maky", "1234567890123400", "666.0"));
-        controlador.imprimirClientes();
+        controlador.actualizarNombreCuenta(new actualizarNombreCuentaDTO("004", "Fiora"));
+        controlador.imprimirClientesPDF();
         controlador.guardar();
-        
+              
 
     }
     

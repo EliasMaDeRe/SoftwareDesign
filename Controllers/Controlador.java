@@ -5,19 +5,29 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.regex.*;
 
+
+import org.apache.pdfbox.pdmodel.*;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.*;
+
 import DTOs.actualizarNombreCuentaDTO;
 import DTOs.anadirClienteDTO;
 import DTOs.borrarCuentaDTO;
+import Interfaces.Cypher;
 import Models.Banco;
 import Models.Cuenta; 
 
 public class Controlador {
 
     private Banco banco;
+    private Cypher cifrador;
 
     public Controlador(String archivo){
 
+        cifrador = new EncryptAES();
         banco = new Banco(archivo);
+        cifrador.cifrarArchivo(archivo);
+        
 
     }
 
@@ -37,10 +47,51 @@ public class Controlador {
 
     }
 
+    public void imprimirClientesPDF(){
+        try{
+
+            PDDocument documento = new PDDocument();
+            PDPage pagina = new PDPage(PDRectangle.A4);
+            documento.addPage(pagina);
+            PDPageContentStream contenido = new PDPageContentStream(documento, pagina);
+            contenido.beginText();
+            PDFont font = PDType1Font.HELVETICA_BOLD;
+            contenido.setFont(font ,12);
+            contenido.newLineAtOffset(20, pagina.getMediaBox().getHeight()-52);
+            contenido.setLeading(14.5f);
+            
+            HashMap<String,ArrayList<Cuenta>> clientes = banco.getClientes();
+
+            for(Entry<String,ArrayList<Cuenta>> entry : clientes.entrySet()){
+                if(entry.getValue().isEmpty()) continue;
+                contenido.showText("Cliente: "+entry.getValue().get(0).getnombreTitular());
+                contenido.newLine();
+                for(int i = 0; i < entry.getValue().size(); ++i){
+    
+                    contenido.showText("    "+entry.getValue().get(i).getnumeroCuenta());
+                    contenido.newLine();
+    
+                }
+            }
+
+
+            contenido.endText();
+            contenido.close();
+            documento.save("Lista.pdf");
+
+        }catch(Exception e){
+
+            e.printStackTrace();
+
+        }
+
+    }
+
     public void guardar(){
 
+        cifrador.decifrarArchivo(banco.getArchivo());
         banco.cerrarBanco();
-
+        
     }
 
     public boolean anadirCliente(anadirClienteDTO info){
