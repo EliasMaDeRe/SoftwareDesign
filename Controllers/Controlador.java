@@ -22,11 +22,14 @@ public class Controlador {
     private Banco banco;
     private Cypher cifrador;
 
-    public Controlador(String archivo){
+    public Controlador(String archivo, String algoritmo){
 
-        cifrador = new EncryptAES();
+        if(algoritmo == "RSA")
+            cifrador = new RSADataCypher();
+        cifrador.decifrarArchivo();
         banco = new Banco(archivo);
-        cifrador.cifrarArchivo(archivo);
+        cifrador.cifrarArchivo();
+        
         
 
     }
@@ -89,8 +92,8 @@ public class Controlador {
 
     public void guardar(){
 
-        cifrador.decifrarArchivo(banco.getArchivo());
         banco.cerrarBanco();
+        cifrador.cifrarArchivo();
         
     }
 
