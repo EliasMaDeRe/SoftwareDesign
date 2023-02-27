@@ -22,9 +22,9 @@ import java.util.ArrayList;
 
 public class RSADataCypher implements Cypher{
 
-    public final String RUTA_PUBLICA = "C:\\Users\\EMadera\\Documents\\GitHub\\SoftwareDesign\\public.key";
-    public final String RUTA_PRIVADA = "C:\\Users\\EMadera\\Documents\\GitHub\\SoftwareDesign\\private.key";
-    public final String RUTA_DATA = "C:\\Users\\EMadera\\Documents\\GitHub\\SoftwareDesign\\clientes.txt";
+    public final String RUTA_PUBLICA = "public.key";
+    public final String RUTA_PRIVADA = "private.key";
+    public final String RUTA_DATA = "clientes.txt";
     public final String ALGORITHM = "RSA";
     
     // Metodo que genera la llave a partir KeyPairGenerator usando RSA, generando una pública y privada que será guardada en el archivo keys.
