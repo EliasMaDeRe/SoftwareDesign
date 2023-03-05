@@ -34,6 +34,11 @@ public class Controlador {
 
     }
 
+    public Cypher getCypher(){
+
+        return cifrador;
+    }
+
     public void imprimirClientes(){
 
         HashMap<String,ArrayList<Cuenta>> clientes = banco.getClientes();
